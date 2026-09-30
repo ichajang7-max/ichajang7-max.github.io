@@ -112,8 +112,8 @@
   .r-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--ink-3); }
   .r-block { background: var(--type); color: var(--paper); padding: 26px 22px 22px; margin: 12px 0 0; position: relative; overflow: hidden; }
   .r-code { position: absolute; right: -6px; top: -24px; font-family: var(--serif); font-weight: 900; font-size: 128px; line-height: 1; opacity: .12; letter-spacing: -.04em; }
-  .r-name { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 10vw, 48px); line-height: 1.15; letter-spacing: -.03em; margin: 0; position: relative; }
-  .r-line { margin: 14px 0 0; font-size: 17px; position: relative; opacity: .95; }
+  .r-name { font-family: var(--serif); font-weight: 900; font-size: clamp(42px, 13vw, 60px); line-height: 1.15; letter-spacing: -.03em; margin: 0; position: relative; }
+  .r-line { margin: 12px 0 0; font-size: 19px; font-weight: 500; position: relative; opacity: .95; }
   .r-quote { font-family: var(--serif); font-size: 19px; line-height: 1.55; margin: 26px 0 0; padding: 0 0 0 16px; border-left: 3px solid var(--type); color: var(--ink-2); }
   .section { margin: 38px 0 0; }
   .section h2 { color: var(--type); border-bottom: 1.5px solid var(--ink); padding-bottom: 8px; }
@@ -161,14 +161,14 @@
     <div class="mast"><span>AI Work Type</span><span>재미로 보는 테스트</span></div>
     <p class="kicker">직장인 AI 유형 테스트</p>
     <h1 class="hero-title" id="t-intro">나는 어떤<br><em>AI 직장인</em>일까?</h1>
-    <p class="hero-sub">회의록, 보고서, 메일 앞에서 나는 AI를 어떻게 쓰고 있을까. 상황 12개에 답하면 8가지 유형 중 하나가 나와요.</p>
+    <p class="hero-sub">회의록, 보고서, 메일.<br>나는 AI를 어떻게 쓰고 있을까요?<br>12가지 상황에 답하면 내 유형이 나와요.</p>
     <div class="meta-row">
       <div><b>12</b>상황 질문</div>
       <div><b>8</b>가지 유형</div>
       <div><b>0</b>입력하는 개인정보</div>
     </div>
     <button class="btn" id="start">테스트 시작하기</button>
-    <p class="fine">재미로 보는 테스트예요. 과학적인 성격 검사가 아니에요. 답은 이 화면 안에서만 계산되고 어디에도 저장·전송되지 않아요.</p>
+    <p class="fine">재미로 보는 테스트예요. 과학적인 성격 검사는 아니에요.<br>답은 이 화면에서만 계산하고, 어디에도 저장하거나 보내지 않아요.</p>
     <div class="type-index">
       <h2>8가지 유형</h2>
       <ul id="type-list"></ul>
@@ -211,7 +211,7 @@
     </div>
 
     <div class="section">
-      <h2>이 유형의 강점</h2>
+      <h2>이런 게 강점</h2>
       <ul class="list" id="strengths"></ul>
     </div>
 
@@ -385,7 +385,7 @@
   if (!navigator.share) $("native-share").style.display = "none", $("copy-link").style.gridColumn = "1 / -1";
   $("native-share").addEventListener("click", function () {
     var t = T[currentCode];
-    navigator.share({ title: "나의 AI 업무 유형", text: "내 AI 업무 유형은 「" + t.name + "」! 너는?", url: shareUrl() }).catch(function () {});
+    navigator.share({ title: "나의 AI 업무 유형", text: "나 AI 업무 유형 「" + t.name + "」이래. " + t.line + ". 너는?", url: shareUrl() }).catch(function () {});
   });
 
   // ── 결과 카드 PNG (1080×1350, 인스타 세로 비율) ──
@@ -421,18 +421,19 @@
     x.fillStyle = t.color; x.fillRect(bx, by, bw, bh);
     x.save(); x.beginPath(); x.rect(bx, by, bw, bh); x.clip();
     x.globalAlpha = .16; x.fillStyle = "#FBF8F2"; x.font = "900 330px " + serif; x.textAlign = "right";
-    x.fillText(code, bx + bw + 14, by + bh + 70); x.restore(); x.textAlign = "left";
+    x.fillText(code, bx + bw + 14, by + bh + 150); x.restore(); x.textAlign = "left";
     x.fillStyle = "#FBF8F2"; x.font = "700 30px " + sans; x.fillText(code, bx + 56, by + 86);
-    x.font = "900 104px " + serif;
+    x.font = "900 136px " + serif;
     var nameLines = wrapLines(x, t.name, bw - 112);
+    if (nameLines.length > 1) { x.font = "900 104px " + serif; nameLines = wrapLines(x, t.name, bw - 112); }
     if (nameLines.length > 2) { x.font = "900 84px " + serif; nameLines = wrapLines(x, t.name, bw - 112); }
     var lh = parseInt(x.font.match(/(\d+)px/)[1], 10) * 1.18;
-    var ny = by + 250;
+    var ny = by + 300;
     nameLines.forEach(function (l, i) { x.fillText(l, bx + 56, ny + i * lh); });
-    x.font = "500 38px " + sans;
+    x.font = "700 44px " + sans;
     var ll = wrapLines(x, t.line, bw - 112);
-    var ly = ny + (nameLines.length - 1) * lh + 84;
-    ll.forEach(function (l, i) { x.fillText(l, bx + 56, ly + i * 54); });
+    var ly = ny + (nameLines.length - 1) * lh + 100;
+    ll.forEach(function (l, i) { x.fillText(l, bx + 56, ly + i * 60); });
     // 말버릇
     var ql0 = "“" + t.quote + "”";
     x.font = "500 40px " + serif;
