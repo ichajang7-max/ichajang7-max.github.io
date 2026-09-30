@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>나의 AI 업무 유형</title>
+<meta name="description" content="12개 질문으로 알아보는, 내가 일에 AI를 쓰는 방식. 재미로 보는 테스트예요.">
+<meta property="og:title" content="나는 어떤 AI 직장인일까?">
+<meta property="og:description" content="12개 질문으로 알아보는 나의 AI 업무 유형 — 재미로 보는 테스트">
+<meta name="theme-color" content="#F4EEE3">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F4EEE3;
+    --paper: #FBF8F2;
+    --ink: #1D1B18;
+    --ink-2: #4A4540;
+    --ink-3: #8A8279;
+    --rule: #D9CFBF;
+    --clay: #A9502F;
+    --type: #A9502F;
+    --serif: "Noto Serif KR", "Nanum Myeongjo", serif;
+    --sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+  .wrap { max-width: 540px; margin: 0 auto; padding: 0 20px; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .screen { display: none; min-height: 100svh; padding-bottom: 48px; }
+  .screen.on { display: block; animation: rise .45s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* 머리띠 */
+  .mast {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 0 12px; border-bottom: 1.5px solid var(--ink);
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
+  }
+  .mast span:last-child { color: var(--ink-3); letter-spacing: .04em; text-transform: none; font-weight: 500; }
+
+  /* 첫 화면 */
+  .kicker { margin: 40px 0 12px; font-size: 13px; font-weight: 700; color: var(--clay); letter-spacing: .08em; }
+  .hero-title {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(44px, 13vw, 68px); line-height: 1.08; letter-spacing: -.03em; margin: 0;
+  }
+  .hero-title em { font-style: normal; color: var(--clay); }
+  .hero-sub { margin: 20px 0 0; font-size: 17px; color: var(--ink-2); }
+  .meta-row { display: flex; gap: 24px; margin: 28px 0; padding: 14px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .meta-row div { font-size: 13px; color: var(--ink-3); }
+  .meta-row b { display: block; font-family: var(--serif); font-size: 26px; color: var(--ink); line-height: 1.2; }
+  .btn {
+    display: block; width: 100%; padding: 18px 20px; border: 0; border-radius: 0;
+    background: var(--ink); color: var(--paper); font-weight: 700; font-size: 17px; letter-spacing: .02em;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn:hover { background: #000; }
+  .btn:active { transform: scale(.985); }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn.ghost:hover { background: var(--paper); }
+  .fine { font-size: 12.5px; color: var(--ink-3); margin: 14px 0 0; }
+  .type-index { margin: 44px 0 0; }
+  .type-index h2, .section h2 {
+    font-size: 12px; letter-spacing: .12em; font-weight: 700; margin: 0 0 12px; color: var(--ink-3);
+  }
+  .type-index ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--rule); }
+  .type-index li { padding: 12px 8px 12px 0; border-bottom: 1px solid var(--rule); font-size: 14px; display: flex; gap: 10px; align-items: center; }
+  .type-index li:nth-child(odd) { border-right: 1px solid var(--rule); }
+  .type-index li:nth-child(even) { padding-left: 12px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+  /* 질문 화면 */
+  .q-top { display: flex; align-items: baseline; justify-content: space-between; margin: 28px 0 10px; }
+  .q-num { font-family: var(--serif); font-weight: 900; font-size: 56px; line-height: 1; letter-spacing: -.03em; }
+  .q-num small { font-size: 20px; color: var(--ink-3); font-weight: 500; }
+  .back { background: none; border: 0; font-size: 14px; color: var(--ink-3); padding: 6px 0; }
+  .back:disabled { visibility: hidden; }
+  .bar { height: 3px; background: var(--rule); position: relative; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--clay); transition: width .35s ease; }
+  .q-text { font-family: var(--serif); font-weight: 700; font-size: clamp(22px, 6.2vw, 28px); line-height: 1.45; letter-spacing: -.02em; margin: 32px 0 26px; min-height: 3em; }
+  .opts { display: grid; gap: 10px; }
+  .opt {
+    text-align: left; background: var(--paper); border: 1.5px solid var(--rule); border-radius: 0;
+    padding: 16px 18px; font-size: 16px; line-height: 1.5; display: flex; gap: 14px; align-items: flex-start;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .opt .k { font-family: var(--serif); font-weight: 900; color: var(--ink-3); font-size: 15px; line-height: 1.6; flex: none; width: 14px; }
+  .opt:hover { border-color: var(--ink); }
+  .opt:active { transform: scale(.99); }
+  .opt.picked { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .opt.picked .k { color: var(--paper); }
+  .opt:focus-visible, .btn:focus-visible, .chip-btn:focus-visible { outline: 3px solid var(--clay); outline-offset: 2px; }
+
+  /* 결과 */
+  .shared-note a { color: var(--ink); font-weight: 700; }
+  .shared-note { margin: 18px 0 0; padding: 12px 14px; background: var(--paper); border-left: 3px solid var(--type); font-size: 14px; }
+  .r-head { margin: 26px 0 0; }
+  .r-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--ink-3); }
+  .r-block { background: var(--type); color: var(--paper); padding: 26px 22px 22px; margin: 12px 0 0; position: relative; overflow: hidden; }
+  .r-code { position: absolute; right: -6px; top: -24px; font-family: var(--serif); font-weight: 900; font-size: 128px; line-height: 1; opacity: .12; letter-spacing: -.04em; }
+  .r-name { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 10vw, 48px); line-height: 1.15; letter-spacing: -.03em; margin: 0; position: relative; }
+  .r-line { margin: 14px 0 0; font-size: 17px; position: relative; opacity: .95; }
+  .r-quote { font-family: var(--serif); font-size: 19px; line-height: 1.55; margin: 26px 0 0; padding: 0 0 0 16px; border-left: 3px solid var(--type); color: var(--ink-2); }
+  .section { margin: 38px 0 0; }
+  .section h2 { color: var(--type); border-bottom: 1.5px solid var(--ink); padding-bottom: 8px; }
+  .axes { display: grid; gap: 16px; }
+  .axis-row .labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-3); margin-bottom: 6px; }
+  .axis-row .labels b { color: var(--ink); }
+  .axis-track { height: 8px; background: var(--rule); position: relative; }
+  .axis-track i { position: absolute; top: 0; bottom: 0; background: var(--type); }
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { padding: 12px 0; border-bottom: 1px solid var(--rule); display: flex; gap: 14px; }
+  .list .n { font-family: var(--serif); font-weight: 900; color: var(--type); font-size: 20px; line-height: 1.3; flex: none; width: 22px; }
+  .watch { background: var(--paper); padding: 16px 18px; font-size: 15px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .chip-btn { text-align: left; background: var(--paper); border: 1.5px solid var(--rule); padding: 14px; border-radius: 0; }
+  .chip-btn:hover { border-color: var(--ink); }
+  .chip-btn small { display: block; font-size: 12px; color: var(--ink-3); font-weight: 700; letter-spacing: .04em; }
+  .chip-btn b { display: block; font-family: var(--serif); font-size: 17px; line-height: 1.35; margin: 6px 0 4px; }
+  .chip-btn span { font-size: 13px; color: var(--ink-2); line-height: 1.45; display: block; }
+  .share { display: grid; gap: 10px; margin: 40px 0 0; }
+  .share-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn.type { background: var(--type); }
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); opacity: 0;
+    background: var(--ink); color: var(--paper); padding: 12px 18px; font-size: 14px; pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease; z-index: 10; max-width: calc(100% - 32px);
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .notice { margin: 28px 0 0; font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+  .channel { margin: 44px 0 0; padding: 22px 20px; background: var(--ink); color: var(--paper); }
+  .channel p { margin: 0; }
+  .channel .c-k { font-size: 12px; letter-spacing: .12em; opacity: .6; font-weight: 700; }
+  .channel .c-t { font-family: var(--serif); font-size: 21px; font-weight: 700; margin: 8px 0 14px; line-height: 1.4; }
+  .channel .links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .channel a { color: var(--paper); border: 1px solid rgba(251,248,242,.5); padding: 8px 14px; text-decoration: none; font-size: 14px; }
+  .channel a:hover { background: rgba(251,248,242,.1); }
+  footer { margin: 28px 0 0; font-size: 12px; color: var(--ink-3); }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- 첫 화면 -->
+<section class="screen on" id="intro" aria-labelledby="t-intro">
+  <div class="wrap">
+    <div class="mast"><span>AI Work Type</span><span>재미로 보는 테스트</span></div>
+    <p class="kicker">직장인 AI 유형 테스트</p>
+    <h1 class="hero-title" id="t-intro">나는 어떤<br><em>AI 직장인</em>일까?</h1>
+    <p class="hero-sub">회의록, 보고서, 메일 앞에서 나는 AI를 어떻게 쓰고 있을까. 상황 12개에 답하면 8가지 유형 중 하나가 나와요.</p>
+    <div class="meta-row">
+      <div><b>12</b>상황 질문</div>
+      <div><b>8</b>가지 유형</div>
+      <div><b>0</b>입력하는 개인정보</div>
+    </div>
+    <button class="btn" id="start">테스트 시작하기</button>
+    <p class="fine">재미로 보는 테스트예요. 과학적인 성격 검사가 아니에요. 답은 이 화면 안에서만 계산되고 어디에도 저장·전송되지 않아요.</p>
+    <div class="type-index">
+      <h2>8가지 유형</h2>
+      <ul id="type-list"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 질문 화면 -->
+<section class="screen" id="quiz" aria-live="polite">
+  <div class="wrap">
+    <div class="mast"><span>AI Work Type</span><span>재미로 보는 테스트</span></div>
+    <div class="q-top">
+      <div class="q-num"><span id="q-idx">01</span><small> / 12</small></div>
+      <button class="back" id="back">← 이전 질문</button>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+    <h2 class="q-text" id="q-text"></h2>
+    <div class="opts" id="opts"></div>
+  </div>
+</section>
+
+<!-- 결과 화면 -->
+<section class="screen" id="result">
+  <div class="wrap">
+    <div class="mast"><span>AI Work Type</span><span>재미로 보는 테스트</span></div>
+    <div class="shared-note" id="shared-note" hidden>친구가 보내 준 결과예요. 나는 어떤 유형일까요? <a href="#" id="try-link">나도 해 보기 →</a></div>
+    <div class="r-head">
+      <div class="r-kicker" id="r-kicker">나의 AI 업무 유형은</div>
+      <div class="r-block">
+        <div class="r-code" id="r-code" aria-hidden="true"></div>
+        <h1 class="r-name" id="r-name"></h1>
+        <p class="r-line" id="r-line"></p>
+      </div>
+      <blockquote class="r-quote" id="r-quote"></blockquote>
+    </div>
+
+    <div class="section" id="axes-sec">
+      <h2>나의 성향</h2>
+      <div class="axes" id="axes"></div>
+    </div>
+
+    <div class="section">
+      <h2>이 유형의 강점</h2>
+      <ul class="list" id="strengths"></ul>
+    </div>
+
+    <div class="section">
+      <h2>이렇게 써 보세요</h2>
+      <ul class="list" id="tips"></ul>
+    </div>
+
+    <div class="section">
+      <h2>한 가지만 조심</h2>
+      <div class="watch" id="watch"></div>
+    </div>
+
+    <div class="section">
+      <h2>궁합</h2>
+      <div class="pair" id="pair"></div>
+    </div>
+
+    <div class="share">
+      <button class="btn type" id="save-card">결과 카드 이미지로 저장</button>
+      <div class="share-row">
+        <button class="btn ghost" id="copy-link">결과 링크 복사</button>
+        <button class="btn ghost" id="native-share">공유하기</button>
+      </div>
+      <button class="btn ghost" id="retry">처음부터 다시 하기</button>
+    </div>
+
+    <p class="notice">회사 자료를 AI에 넣기 전에는 회사의 보안 규정을 먼저 확인하세요.<br>재미로 보는 테스트예요. 과학적인 성격 검사가 아니며, 결과는 답한 순간의 경향일 뿐이에요.</p>
+
+    <!-- 이차장 채널 안내: 링크는 공개 전에 넣는다 -->
+    <div class="channel">
+      <p class="c-k">만든 사람</p>
+      <p class="c-t">이차장 — 퇴근 뒤, AI로 일하는 법을 기록합니다</p>
+      <div class="links">
+        <a href="#" data-link="instagram" rel="noopener">인스타그램</a>
+        <a href="#" data-link="youtube" rel="noopener">유튜브</a>
+      </div>
+    </div>
+    <footer>이 페이지는 광고·추적 코드가 없고, 답을 저장하지 않아요.</footer>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+<canvas id="card" width="1080" height="1350" hidden></canvas>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var D = window.AI_TYPE, Q = D.QUESTIONS, T = D.TYPES, AX = D.AXES;
+  var $ = function (id) { return document.getElementById(id); };
+  var answers = [], cur = 0, lastSum = null, currentCode = null;
+  var KEYS = ["A", "B", "C", "D"];
+
+  // 채널 링크 — 공개 전에 채운다 (비어 있으면 누르지 않게)
+  var CHANNEL = { instagram: "https://www.instagram.com/leechajang.excel/", youtube: "https://www.youtube.com/@leechajang7" };
+  document.querySelectorAll("[data-link]").forEach(function (a) {
+    var u = CHANNEL[a.dataset.link];
+    if (u) { a.href = u; a.target = "_blank"; }
+    else a.addEventListener("click", function (e) { e.preventDefault(); toast("링크는 곧 열려요"); });
+  });
+
+  // 첫 화면 유형 목록
+  $("type-list").innerHTML = Object.keys(T).map(function (k) {
+    return '<li><span class="dot" style="background:' + T[k].color + '"></span>' + T[k].name + '</li>';
+  }).join("");
+
+  function show(id) {
+    document.querySelectorAll(".screen").forEach(function (s) { s.classList.toggle("on", s.id === id); });
+    window.scrollTo(0, 0);
+  }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.classList.add("on");
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove("on"); }, 1800);
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function renderQ() {
+    var q = Q[cur];
+    $("q-idx").textContent = pad(cur + 1);
+    $("bar").style.width = (cur / Q.length * 100) + "%";
+    $("q-text").textContent = q.q;
+    $("back").disabled = cur === 0;
+    $("opts").innerHTML = q.o.map(function (o, i) {
+      return '<button class="opt' + (answers[cur] === i ? " picked" : "") + '" data-i="' + i + '"><span class="k">' + KEYS[i] + '</span><span>' + esc(o[0]) + '</span></button>';
+    }).join("");
+  }
+  $("opts").addEventListener("click", function (e) {
+    var b = e.target.closest(".opt"); if (!b || $("opts").dataset.lock) return;
+    answers[cur] = +b.dataset.i;
+    b.classList.add("picked");
+    $("opts").dataset.lock = "1";
+    setTimeout(function () {
+      delete $("opts").dataset.lock;
+      if (cur < Q.length - 1) { cur++; renderQ(); }
+      else finish();
+    }, 220);
+  });
+  $("back").addEventListener("click", function () { if (cur > 0) { cur--; renderQ(); } });
+  $("start").addEventListener("click", start);
+  $("retry").addEventListener("click", function () { history.replaceState(null, "", location.pathname); show("intro"); });
+  $("try-link").addEventListener("click", function (e) { e.preventDefault(); start(); });
+
+  function start() { answers = []; cur = 0; lastSum = null; renderQ(); show("quiz"); }
+  function finish() {
+    var r = D.score(answers);
+    lastSum = r.sum;
+    renderResult(r.code, false);
+  }
+
+  // 축 합(-8~8) → 앞쪽(+) 비율 %
+  function pct(sum) { return Math.round((sum + 8) / 16 * 100); }
+
+  function renderResult(code, shared) {
+    var t = T[code]; currentCode = code;
+    document.documentElement.style.setProperty("--type", t.color);
+    $("shared-note").hidden = !shared;
+    $("r-kicker").textContent = shared ? "친구의 AI 업무 유형은" : "나의 AI 업무 유형은";
+    $("r-code").textContent = code;
+    $("r-name").textContent = t.name;
+    $("r-line").textContent = t.line;
+    $("r-quote").textContent = "“" + t.quote + "”";
+    $("strengths").innerHTML = t.strengths.map(function (s, i) { return '<li><span class="n">' + (i + 1) + '</span><span>' + esc(s) + '</span></li>'; }).join("");
+    $("tips").innerHTML = t.tips.map(function (s, i) { return '<li><span class="n">' + (i + 1) + '</span><span>' + esc(s) + '</span></li>'; }).join("");
+    $("watch").textContent = t.watch;
+    var b = T[t.best], w = T[t.worst];
+    $("pair").innerHTML =
+      '<button class="chip-btn" data-code="' + b.code + '"><small>잘 맞는 유형</small><b style="color:' + b.color + '">' + b.name + '</b><span>목적은 같고 방식이 달라 서로 빈 곳을 채워 줘요.</span></button>' +
+      '<button class="chip-btn" data-code="' + w.code + '"><small>조심할 유형</small><b style="color:' + w.color + '">' + w.name + '</b><span>세 가지가 다 반대라, 일할 때 서로 답답할 수 있어요.</span></button>';
+    // 성향 막대: 직접 테스트한 경우에만
+    if (lastSum && !shared) {
+      $("axes-sec").hidden = false;
+      $("axes").innerHTML = ["A", "B", "C"].map(function (ax) {
+        var p = pct(lastSum[ax]), plusSide = code.indexOf(AX[ax].plus) >= 0;
+        var w2 = plusSide ? Math.max(p, 50) : Math.max(100 - p, 50);
+        var style = plusSide ? "left:0;width:" + w2 + "%" : "right:0;width:" + w2 + "%";
+        return '<div class="axis-row"><div class="labels"><span>' + (plusSide ? "<b>" + AX[ax].plusLabel + " " + w2 + "%</b>" : AX[ax].plusLabel) + '</span><span>' +
+          (!plusSide ? "<b>" + AX[ax].minusLabel + " " + w2 + "%</b>" : AX[ax].minusLabel) + '</span></div><div class="axis-track"><i style="' + style + '"></i></div></div>';
+      }).join("");
+    } else {
+      $("axes-sec").hidden = true;
+    }
+    history.replaceState(null, "", "#" + code);
+    show("result");
+  }
+  $("pair").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip-btn"); if (!b) return;
+    lastSum = null; renderResult(b.dataset.code, true);
+    $("shared-note").hidden = true;
+    $("r-kicker").textContent = "다른 유형 살펴보기";
+  });
+
+  function shareUrl() { return location.href.split("#")[0] + "#" + currentCode; }
+
+  // 링크 복사
+  $("copy-link").addEventListener("click", function () {
+    var url = shareUrl();
+    function fallback() {
+      var ta = document.createElement("textarea"); ta.value = url; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      toast(ok ? "링크를 복사했어요" : "복사가 안 돼요. 주소창의 링크를 길게 눌러 복사해 주세요");
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(function () { toast("링크를 복사했어요"); }, fallback);
+    } else fallback();
+  });
+
+  // 휴대폰 공유창 (지원하는 브라우저만)
+  if (!navigator.share) $("native-share").style.display = "none", $("copy-link").style.gridColumn = "1 / -1";
+  $("native-share").addEventListener("click", function () {
+    var t = T[currentCode];
+    navigator.share({ title: "나의 AI 업무 유형", text: "내 AI 업무 유형은 「" + t.name + "」! 너는?", url: shareUrl() }).catch(function () {});
+  });
+
+  // ── 결과 카드 PNG (1080×1350, 인스타 세로 비율) ──
+  function wrapLines(ctx, text, maxW) {
+    var out = [], line = "";
+    text.split("").forEach(function (ch) {
+      var test = line + ch;
+      if (ctx.measureText(test).width > maxW && line) { out.push(line); line = ch === " " ? "" : ch; }
+      else line = test;
+    });
+    if (line) out.push(line);
+    // 한국어 어절이 잘리지 않게: 줄 끝을 공백 기준으로 다시 맞춘다
+    var words = text.split(" "), res = [], l2 = "";
+    words.forEach(function (w) {
+      var t2 = l2 ? l2 + " " + w : w;
+      if (ctx.measureText(t2).width > maxW && l2) { res.push(l2); l2 = w; } else l2 = t2;
+    });
+    if (l2) res.push(l2);
+    return res.every(function (s) { return ctx.measureText(s).width <= maxW; }) ? res : out;
+  }
+  function drawCard(code) {
+    var t = T[code], c = $("card"), x = c.getContext("2d");
+    var W = 1080, H = 1350, M = 84;
+    var serif = '"Noto Serif KR", serif', sans = '"Noto Sans KR", "Malgun Gothic", sans-serif';
+    x.fillStyle = "#F4EEE3"; x.fillRect(0, 0, W, H);
+    // 머리띠
+    x.fillStyle = "#1D1B18"; x.textBaseline = "alphabetic";
+    x.font = "700 30px " + sans; x.fillText("나의 AI 업무 유형", M, 118);
+    x.fillStyle = "#8A8279"; x.font = "500 26px " + sans; x.textAlign = "right"; x.fillText("재미로 보는 테스트", W - M, 118); x.textAlign = "left";
+    x.fillStyle = "#1D1B18"; x.fillRect(M, 146, W - M * 2, 3);
+    // 색 블록
+    var bx = M, by = 196, bw = W - M * 2, bh = 560;
+    x.fillStyle = t.color; x.fillRect(bx, by, bw, bh);
+    x.save(); x.beginPath(); x.rect(bx, by, bw, bh); x.clip();
+    x.globalAlpha = .16; x.fillStyle = "#FBF8F2"; x.font = "900 330px " + serif; x.textAlign = "right";
+    x.fillText(code, bx + bw + 14, by + bh + 70); x.restore(); x.textAlign = "left";
+    x.fillStyle = "#FBF8F2"; x.font = "700 30px " + sans; x.fillText(code, bx + 56, by + 86);
+    x.font = "900 104px " + serif;
+    var nameLines = wrapLines(x, t.name, bw - 112);
+    if (nameLines.length > 2) { x.font = "900 84px " + serif; nameLines = wrapLines(x, t.name, bw - 112); }
+    var lh = parseInt(x.font.match(/(\d+)px/)[1], 10) * 1.18;
+    var ny = by + 250;
+    nameLines.forEach(function (l, i) { x.fillText(l, bx + 56, ny + i * lh); });
+    x.font = "500 38px " + sans;
+    var ll = wrapLines(x, t.line, bw - 112);
+    var ly = ny + (nameLines.length - 1) * lh + 84;
+    ll.forEach(function (l, i) { x.fillText(l, bx + 56, ly + i * 54); });
+    // 말버릇
+    var ql0 = "“" + t.quote + "”";
+    x.font = "500 40px " + serif;
+    var ql = wrapLines(x, ql0, W - M * 2 - 40).slice(0, 2);
+    x.fillStyle = t.color; x.fillRect(M, 836, 6, ql.length * 58 + 14);
+    x.fillStyle = "#4A4540";
+    ql.forEach(function (l, i) { x.fillText(l, M + 36, 882 + i * 58); });
+    // 궁합
+    x.fillStyle = "#1D1B18"; x.fillRect(M, 1044, W - M * 2, 2);
+    x.fillStyle = t.color; x.font = "700 28px " + sans; x.fillText("잘 맞는 유형", M, 1102);
+    x.fillStyle = "#1D1B18"; x.font = "700 40px " + serif;
+    var bl = wrapLines(x, T[t.best].name, W / 2 - M - 30);
+    if (bl.length > 1) x.font = "700 34px " + serif, bl = wrapLines(x, T[t.best].name, W / 2 - M - 30);
+    bl.slice(0, 2).forEach(function (l, i) { x.fillText(l, M, 1160 + i * 44); });
+    x.fillStyle = "#8A8279"; x.font = "700 28px " + sans; x.fillText("조심할 유형", W / 2 + 10, 1102);
+    x.fillStyle = "#1D1B18"; x.font = "700 40px " + serif;
+    var wl = wrapLines(x, T[t.worst].name, W / 2 - M - 10);
+    if (wl.length > 1) x.font = "700 34px " + serif, wl = wrapLines(x, T[t.worst].name, W / 2 - M - 10);
+    wl.slice(0, 2).forEach(function (l, i) { x.fillText(l, W / 2 + 10, 1160 + i * 44); });
+    // 바닥
+    x.fillStyle = "#1D1B18"; x.fillRect(0, H - 110, W, 110);
+    x.fillStyle = "#FBF8F2"; x.font = "700 32px " + sans; x.fillText("나는 어떤 AI 직장인일까?", M, H - 44);
+    x.font = "500 28px " + sans; x.textAlign = "right"; x.fillStyle = "rgba(251,248,242,.7)"; x.fillText("이차장", W - M, H - 44); x.textAlign = "left";
+    return c;
+  }
+  window.__drawCard = drawCard; // 검수용
+
+  function fontsReady() {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    return Promise.all([
+      document.fonts.load('900 100px "Noto Serif KR"'), document.fonts.load('700 40px "Noto Serif KR"'),
+      document.fonts.load('500 40px "Noto Serif KR"'), document.fonts.load('700 30px "Noto Sans KR"'),
+      document.fonts.load('500 30px "Noto Sans KR"')
+    ]).catch(function () {});
+  }
+  $("save-card").addEventListener("click", function () {
+    var code = currentCode;
+    fontsReady().then(function () {
+      var c = drawCard(code);
+      c.toBlob(function (blob) {
+        if (!blob) { toast("이미지를 만들지 못했어요"); return; }
+        var file = new File([blob], "AI업무유형_" + code + ".png", { type: "image/png" });
+        // 휴대폰에서는 공유창으로 바로 저장·스토리 올리기가 편하다
+        if (navigator.canShare && navigator.canShare({ files: [file] }) && /Android|iPhone|iPad/i.test(navigator.userAgent)) {
+          navigator.share({ files: [file], title: "나의 AI 업무 유형" }).catch(function () {});
+          return;
+        }
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = file.name;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+        toast("결과 카드를 저장했어요");
+      }, "image/png");
+    });
+  });
+
+  // 결과별 주소(#유형코드)로 들어온 경우
+  function route() {
+    var code = (location.hash || "").replace("#", "").toUpperCase();
+    if (T[code]) { lastSum = null; renderResult(code, true); }
+  }
+  window.addEventListener("hashchange", function () {
+    var code = (location.hash || "").replace("#", "").toUpperCase();
+    if (T[code] && code !== currentCode) route();
+  });
+  route();
+})();
+</script>
+</body>
+</html>
